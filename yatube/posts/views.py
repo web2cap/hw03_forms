@@ -1,4 +1,3 @@
-from multiprocessing import context
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 
@@ -9,7 +8,7 @@ POST_PER_PAGE = 10
 
 
 def index(request):
-    """В переменную page_obj будет сохранена выборка из POST_PER_PAGE объектов модели Post,
+    """Вывод POST_PER_PAGE объектов модели Post,
     отсортированных по полю pub_date по убыванию,
     с учетом номера страницы переданного в GET.
     """
@@ -44,7 +43,8 @@ def group_posts(request, slug):
 
 
 def profile(request, username):
-    """Список постов пользователя, общее количество постов, инофрмация о пользователе."""
+    """Список постов пользователя, общее количество постов,
+    инофрмация о пользователе."""
 
     author = get_object_or_404(User, username=username)
 
@@ -79,18 +79,14 @@ def post_create(request):
 
     template = "posts/create_post.html"
 
-
     form = PostForm(request.POST or None)
     if form.is_valid():
-        text = form.cleaned_data["text"]
-        group = form.cleaned_data["group"]
         instance = form.save(commit=False)
         instance.author_id = request.user.id
-        post = instance.save()
+        instance.save()
         return redirect("posts:profile", request.user)
 
     return render(request, template, {"form": form})
-
 
 
 def post_edit(request, post_id):
@@ -104,15 +100,13 @@ def post_edit(request, post_id):
     if request.user.id != post.author.id:
         return redirect("posts:post_detail", post.pk)
 
-
     form = PostForm(request.POST or None, instance=post)
     if form.is_valid():
         form.save()
         return redirect("posts:post_detail", post.id)
-    
+
     context = {
         "form": form,
         "is_edit": True,
     }
     return render(request, template, context)
-
