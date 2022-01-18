@@ -3,7 +3,7 @@
 from django import forms
 from .models import Post
 
-MIN_POST_LEN = 30
+MIN_POST_LEN = 1
 
 
 class PostForm(forms.ModelForm):
