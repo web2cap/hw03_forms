@@ -5,4 +5,4 @@ def year(request):
     """Добавляет переменную с текущим годом."""
 
     now = timezone.now()
-    return {"now": now}
+    return {"year": now.year}

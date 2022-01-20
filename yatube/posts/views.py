@@ -13,8 +13,7 @@ def index(request):
     """
 
     post_list = Post.objects.all()
-    page_number = request.GET.get("page")
-    page_obj = paginations(post_list, page_number)
+    page_obj = paginations(request, post_list)
 
     context = {
         "page_obj": page_obj,
@@ -27,8 +26,7 @@ def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
 
     post_list = group.posts.all()
-    page_number = request.GET.get("page")
-    page_obj = paginations(post_list, page_number)
+    page_obj = paginations(request, post_list)
 
     template = "posts/group_list.html"
     context = {
@@ -45,8 +43,7 @@ def profile(request, username):
     author = get_object_or_404(User, username=username)
 
     post_list = author.posts.all()
-    page_number = request.GET.get("page")
-    page_obj = paginations(post_list, page_number)
+    page_obj = paginations(request, post_list)
 
     template = "posts/profile.html"
     context = {
