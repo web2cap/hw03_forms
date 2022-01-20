@@ -1,9 +1,9 @@
-# from dataclasses import fields
-# from msilib import datasizemask
 from django import forms
+from django.conf import settings
+
 from .models import Post
 
-MIN_POST_LEN = 1
+POST_MIN_LEN = getattr(settings, "POST_MIN_LEN", None)
 
 
 class PostForm(forms.ModelForm):
@@ -16,9 +16,9 @@ class PostForm(forms.ModelForm):
     def clean_text(self):
         data = self.cleaned_data["text"]
 
-        if len(data) < MIN_POST_LEN:
+        if len(data) < POST_MIN_LEN:
             raise forms.ValidationError(
-                f"Длинна поста должна быть не менее {MIN_POST_LEN} символов!"
+                f"Длинна поста должна быть не менее {POST_MIN_LEN} символов!"
             )
 
         return data

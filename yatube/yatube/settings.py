@@ -130,8 +130,13 @@ STATICFILES_DIRS = [
 
 LOGIN_URL = "users:login"
 LOGIN_REDIRECT_URL = "posts:index"
-# LOGOUT_REDIRECT_URL = 'posts:index'
 
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
+
+# настройки для Posts
+# минимальная длинна поста
+POST_MIN_LEN = 1
+# постов на странице
+POST_PER_PAGE = 10

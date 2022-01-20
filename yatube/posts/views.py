@@ -1,10 +1,9 @@
-from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .models import Group, Post, User
 from .forms import PostForm
-
-POST_PER_PAGE = 10
+from .models import Group, Post, User
+from .utils import paginations
 
 
 def index(request):
@@ -13,11 +12,9 @@ def index(request):
     с учетом номера страницы переданного в GET.
     """
 
-    post_list = Post.objects.all().order_by("-pub_date")
-    paginator = Paginator(post_list, POST_PER_PAGE)
-
+    post_list = Post.objects.all()
     page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+    page_obj = paginations(post_list, page_number)
 
     context = {
         "page_obj": page_obj,
@@ -30,9 +27,8 @@ def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
 
     post_list = group.posts.all()
-    paginator = Paginator(post_list, POST_PER_PAGE)
     page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+    page_obj = paginations(post_list, page_number)
 
     template = "posts/group_list.html"
     context = {
@@ -49,10 +45,8 @@ def profile(request, username):
     author = get_object_or_404(User, username=username)
 
     post_list = author.posts.all()
-
-    paginator = Paginator(post_list, POST_PER_PAGE)
     page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+    page_obj = paginations(post_list, page_number)
 
     template = "posts/profile.html"
     context = {
@@ -74,6 +68,7 @@ def post_detail(request, post_id):
     return render(request, template, context)
 
 
+@login_required(login_url="users:login")
 def post_create(request):
     """Добавления поста."""
 
@@ -89,6 +84,7 @@ def post_create(request):
     return render(request, template, {"form": form})
 
 
+@login_required(login_url="users:login")
 def post_edit(request, post_id):
     """Редактирование поста. Доступно только автору."""
 
