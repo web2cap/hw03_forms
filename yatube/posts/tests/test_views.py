@@ -16,7 +16,7 @@ class TaskPagesTests(TestCase):
         # Второй автор
         cls.user_second = User.objects.create_user(username="TestSecondAuthor")
 
-        # Галвная группа (с 12 постаами)
+        # Галвная группа (с 12 постами)
         cls.group = Group.objects.create(
             title="Тестовая группа",
             slug="testslug",
