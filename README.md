@@ -1,7 +1,7 @@
 # Catalog of articles categorized by groups
 This version adds pagination of pages, application coverage with tests, and other improvements.
 
-This is the first project in the Bloggers Social Network project series.
+This is the third stage in the Bloggers Social Network project series.
 
 
 Сloned from: https://github.com/web2cap/hw02_community
